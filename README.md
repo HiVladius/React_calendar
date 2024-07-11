@@ -29,7 +29,7 @@ El proyecto sigue una estructura modular, organizada principalmente en la carpet
 - `styles/`: Estilos globales y específicos de componentes.
 
 
-![Logo del Proyecto](/assets/calendar_preview.png "Logo del Proyecto")
+![Vista previa de proyecto](/assets/calendar_preview.png "Vista previa de proyecto")
 
 ## Configuración del Proyecto
 
