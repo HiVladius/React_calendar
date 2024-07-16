@@ -6,7 +6,7 @@ import { Navbar, CalendarEvent, CalendarModal } from "../";
 
 import { localizer, getMessagesES } from "../../helpers";
 import { useState } from "react";
-
+import { useUIStore } from "../../hooks";
 
 
 const myEventsList = [
@@ -21,40 +21,42 @@ const myEventsList = [
       name: "Vladimir Rugama",
       email: "correo@correo.com",
     },
-
   },
 ];
 
 export const CalendarPages = () => {
+  const { openDateModal } = useUIStore();
 
-  const [lastView, setLastView] = useState(localStorage.getItem("lastView") || "month");
+  const [lastView, setLastView] = useState(
+    localStorage.getItem("lastView") || "month"
+  );
 
   const eventStyleGetter = (event, star, end, isSelected) => {
-    
-
     const style = {
       backgroundColor: "#367CF7",
       borderRadius: "0px",
       opacity: 0.8,
       color: "white",
-    }
-    return{
-      style
-    }
-  }
+    };
+    return {
+      style,
+    };
+  };
 
   const doubleClick = (e) => {
-    console.log({doubleClick: e});
-  }
+    // console.log({doubleClick: e});
+    openDateModal();
+  };
 
   const onSelect = (e) => {
-    console.log({click: e});
-  }
+    // console.log({ click: e });
+
+
+  };
 
   const onViewChanged = (e) => {
     localStorage.setItem("lastView", e);
-  }
-
+  };
 
   return (
     <>
@@ -76,9 +78,12 @@ export const CalendarPages = () => {
         onDoubleClickEvent={doubleClick}
         onSelectEvent={onSelect}
         onView={onViewChanged}
+        
       />
 
-      <CalendarModal />
+      <CalendarModal 
+        
+      />
     </>
   );
 };
