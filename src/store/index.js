@@ -1,3 +1,8 @@
 export * from './store'
 
-export * from './uiSlice/uiSlice'
+export * from './ui/uiSlice'
+
+export * from './calendar/calendarSlice'
+
+
+

@@ -6,26 +6,14 @@ import { Navbar, CalendarEvent, CalendarModal } from "../";
 
 import { localizer, getMessagesES } from "../../helpers";
 import { useState } from "react";
-import { useUIStore } from "../../hooks";
+import { useUIStore, useCalendarStore } from "../../hooks";
 
 
-const myEventsList = [
-  {
-    title: "All Day Event very long title",
-    notes: "This is a test note",
-    start: new Date(),
-    end: addHours(new Date(), 2),
-    bgColor: "#fafafa",
-    user: {
-      _id: "123",
-      name: "Vladimir Rugama",
-      email: "correo@correo.com",
-    },
-  },
-];
+
 
 export const CalendarPages = () => {
   const { openDateModal } = useUIStore();
+  const { events, activeEvent } = useCalendarStore();
 
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastView") || "month"
@@ -65,7 +53,7 @@ export const CalendarPages = () => {
       <Calendar
         culture="es"
         localizer={localizer}
-        events={myEventsList}
+        events={events}
         defaultView={lastView}
         startAccessor="start"
         endAccessor="end"
