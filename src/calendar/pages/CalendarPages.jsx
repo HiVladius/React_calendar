@@ -6,55 +6,45 @@ import { Navbar, CalendarEvent, CalendarModal } from "../";
 
 import { localizer, getMessagesES } from "../../helpers";
 import { useState } from "react";
+import { useUIStore, useCalendarStore } from "../../hooks";
 
 
 
-const myEventsList = [
-  {
-    title: "All Day Event very long title",
-    notes: "This is a test note",
-    start: new Date(),
-    end: addHours(new Date(), 2),
-    bgColor: "#fafafa",
-    user: {
-      _id: "123",
-      name: "Vladimir Rugama",
-      email: "correo@correo.com",
-    },
-
-  },
-];
 
 export const CalendarPages = () => {
+  const { openDateModal } = useUIStore();
+  const { events, activeEvent } = useCalendarStore();
 
-  const [lastView, setLastView] = useState(localStorage.getItem("lastView") || "month");
+  const [lastView, setLastView] = useState(
+    localStorage.getItem("lastView") || "month"
+  );
 
   const eventStyleGetter = (event, star, end, isSelected) => {
-    
-
     const style = {
       backgroundColor: "#367CF7",
       borderRadius: "0px",
       opacity: 0.8,
       color: "white",
-    }
-    return{
-      style
-    }
-  }
+    };
+    return {
+      style,
+    };
+  };
 
   const doubleClick = (e) => {
-    console.log({doubleClick: e});
-  }
+    // console.log({doubleClick: e});
+    openDateModal();
+  };
 
   const onSelect = (e) => {
-    console.log({click: e});
-  }
+    // console.log({ click: e });
+
+
+  };
 
   const onViewChanged = (e) => {
     localStorage.setItem("lastView", e);
-  }
-
+  };
 
   return (
     <>
@@ -63,7 +53,7 @@ export const CalendarPages = () => {
       <Calendar
         culture="es"
         localizer={localizer}
-        events={myEventsList}
+        events={events}
         defaultView={lastView}
         startAccessor="start"
         endAccessor="end"
@@ -76,9 +66,12 @@ export const CalendarPages = () => {
         onDoubleClickEvent={doubleClick}
         onSelectEvent={onSelect}
         onView={onViewChanged}
+        
       />
 
-      <CalendarModal />
+      <CalendarModal 
+        
+      />
     </>
   );
 };
