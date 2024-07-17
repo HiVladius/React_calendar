@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Box,
@@ -19,20 +19,18 @@ import es from "date-fns/locale/es";
 
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
-import { useUIStore } from "../../hooks";
-
-
+import { useCalendarStore, useUIStore } from "../../hooks";
 
 registerLocale("es", es);
 
 export const CalendarModal = () => {
-
   const { isDateModalOpen, closeDateModal } = useUIStore();
-  
+  const { activeEvent } = useCalendarStore();
+
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formValues, setFormValues] = useState({
-    title: "Vladimir",
-    notes: "Una nota mas",
+    title: "",
+    notes: "",
     start: new Date(),
     end: addHours(new Date(), 2),
   });
@@ -41,6 +39,13 @@ export const CalendarModal = () => {
     if (!formSubmitted) return "";
     return formValues.title.length > 0 ? "" : "is-invalid";
   }, [formValues.title, formSubmitted]);
+
+  useEffect(() => {
+    if ( activeEvent !== null ) {
+        setFormValues({ ...activeEvent });
+    }    
+    
+  }, [ activeEvent ])
 
   const onInputChange = ({ target }) => {
     setFormValues({
@@ -57,16 +62,8 @@ export const CalendarModal = () => {
   };
 
   const onCloseModal = () => {
-    
     closeDateModal();
-    // setFormValues({
-    //   title: "",
-    //   notes: "",
-    //   start: new Date(),
-    //   end: addHours(new Date(), 2),
-    // });
-    // setFormSubmitted(false);
-    
+  
   };
 
   const onSubmit = (event) => {
@@ -76,7 +73,11 @@ export const CalendarModal = () => {
     const diference = differenceInSeconds(formValues.end, formValues.start);
 
     if (isNaN(diference) || diference <= 0) {
-      Swal.fire("Error", "La fecha fin debe ser mayor a la fecha de inicio", "error");
+      Swal.fire(
+        "Error",
+        "La fecha fin debe ser mayor a la fecha de inicio",
+        "error"
+      );
       return;
     }
     if (formValues.title.length <= 0) return;
@@ -89,7 +90,6 @@ export const CalendarModal = () => {
       <Modal
         open={isDateModalOpen}
         onClose={onCloseModal}
-        
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -105,19 +105,15 @@ export const CalendarModal = () => {
               >
                 Fecha y hora inicio
               </Typography>
-              <DatePicker
-                minDate={formValues.start}
-                selected={formValues.start}
-                className="form-control"
-                onChange={(e) => onDateChanged(e, "start")}
-                showTimeSelect
-                timeFormat="HH:mm"
-                timeIntervals={5}
-                timeCaption="Hora"
-                dateFormat="d MMMM yyyy h:mm aa"
-                todayButton="Hoy"
-                locale={"es"}
-              />
+              <DatePicker 
+                    selected={ formValues.start }
+                    onChange={ (event) => onDateChanged(event, 'start') }
+                    className="form-control"
+                    dateFormat="Pp"
+                    showTimeSelect
+                    locale="es"
+                    timeCaption="Hora"
+                />
             </div>
 
             <div className="form-group mb-2">
@@ -127,16 +123,14 @@ export const CalendarModal = () => {
                 Fecha y hora Fin
               </Typography>
               <DatePicker
+                minDate={formValues.start}
                 selected={formValues.end}
+                onChange={(event) => onDateChanged(event, "end")}
                 className="form-control"
-                onChange={(e) => onDateChanged(e, "end")}
+                dateFormat="Pp"
                 showTimeSelect
-                timeFormat="HH:mm"
-                timeIntervals={5}
+                locale="es"
                 timeCaption="Hora"
-                dateFormat="d MMMM yyyy h:mm aa"
-                todayButton="Hoy"
-                locale={"es"}
               />
             </div>
 
@@ -168,12 +162,11 @@ export const CalendarModal = () => {
                 value={formValues.notes}
                 onChange={onInputChange}
               />
-              <Typography variant="h8">Información adicional</Typography>
             </div>
 
             <button type="submit" className="btn btn-outline-primary btn-block">
               <SaveIcon
-                sx={{ fontSize: 30 }}
+                sx={{ fontSize: 20, marginRight: "5px" }}
                 color="primary"
                 className="text-2xl"
               />

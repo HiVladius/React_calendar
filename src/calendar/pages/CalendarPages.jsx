@@ -1,19 +1,16 @@
 import { Calendar } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import { addHours } from "date-fns";
-import { Navbar, CalendarEvent, CalendarModal } from "../";
+import { Navbar, CalendarEvent, CalendarModal, FabAddNew } from "../";
 
 import { localizer, getMessagesES } from "../../helpers";
 import { useState } from "react";
 import { useUIStore, useCalendarStore } from "../../hooks";
 
 
-
-
 export const CalendarPages = () => {
   const { openDateModal } = useUIStore();
-  const { events, activeEvent } = useCalendarStore();
+  const { events, setActiveEvent } = useCalendarStore();
 
   const [lastView, setLastView] = useState(
     localStorage.getItem("lastView") || "month"
@@ -31,25 +28,25 @@ export const CalendarPages = () => {
     };
   };
 
-  const doubleClick = (e) => {
+  const doubleClick = (event) => {
     // console.log({doubleClick: e});
     openDateModal();
   };
 
-  const onSelect = (e) => {
+  const onSelect = (event) => {
     // console.log({ click: e });
 
-
+    setActiveEvent(event);
   };
 
-  const onViewChanged = (e) => {
-    localStorage.setItem("lastView", e);
+  const onViewChanged = (event) => {
+    localStorage.setItem("lastView", event);
+    setLastView(event);
   };
 
   return (
     <>
       <Navbar />
-
       <Calendar
         culture="es"
         localizer={localizer}
@@ -57,7 +54,7 @@ export const CalendarPages = () => {
         defaultView={lastView}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "calc(80vh - 80px" }}
+        style={{ height: "calc( 100vh - 80px )" }}
         messages={getMessagesES()}
         eventPropGetter={eventStyleGetter}
         components={{
@@ -66,12 +63,11 @@ export const CalendarPages = () => {
         onDoubleClickEvent={doubleClick}
         onSelectEvent={onSelect}
         onView={onViewChanged}
-        
       />
 
-      <CalendarModal 
-        
-      />
+      <CalendarModal />
+
+      <FabAddNew />
     </>
   );
 };
