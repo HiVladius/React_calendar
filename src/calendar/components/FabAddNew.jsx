@@ -6,6 +6,7 @@ import { AddCircle } from "@mui/icons-material";
 import { useCalendarStore, useUIStore } from "../../hooks";
 import { addHours } from "date-fns";
 
+
 export const FabAddNew = () => {
   const { openDateModal } = useUIStore();
 
@@ -23,8 +24,11 @@ export const FabAddNew = () => {
         name: "vladimir",
       },
     });
-    openDateModal();
+    openDateModal();   
+    
   };
+
+  
 
   return (
     <Button
