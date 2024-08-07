@@ -7,19 +7,56 @@ import {
   Grid,
   Box,
 } from "@mui/material";
-import Logo from '../../assets/react.svg'
+import Logo from "../../assets/react.svg";
+
+import { useForm } from "../../hooks";
+
+import { useAuthStore } from "../../hooks";
+
+const loginFormFields = {
+  loginEmail: "",
+  loginPassword: "",
+};
+
+const registerFormFields = {
+  registerName: "",
+  registerEmail: "",
+  registerPassword: "",
+  registerPassword2: "",
+};
 
 export const LoginPages = () => {
-  const handleSubmitLogin = (event) => {
+
+  const { starLogin } = useAuthStore();
+
+  const {
+    loginEmail,
+    loginPassword,
+    onInputChange: onLoginInputChange,
+  } = useForm(loginFormFields);
+
+  const {
+    registerName,
+    registerEmail,
+    registerPassword,
+    registerPassword2,
+    onInputChange: onRegisterInputChange,
+  } = useForm(registerFormFields);
+
+  const loginSubmit = (event) => {
     event.preventDefault();
-    // Manejar el envío del formulario de inicio de sesión
-    console.log("Formulario de inicio de sesión enviado");
+    
+    starLogin({email: loginEmail, password: loginPassword});
   };
 
-  const handleSubmitRegister = (event) => {
+  const registerSubmit = (event) => {
     event.preventDefault();
-    // Manejar el envío del formulario de registro
-    console.log("Formulario de registro enviado");
+    console.log({
+      registerName,
+      registerEmail,
+      registerPassword,
+      registerPassword2,
+    });
   };
 
   return (
@@ -37,7 +74,7 @@ export const LoginPages = () => {
           <Typography component="h1" variant="h5">
             Iniciar sesión
           </Typography>
-          <form onSubmit={handleSubmitLogin}>
+          <form onSubmit={loginSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -45,7 +82,9 @@ export const LoginPages = () => {
               fullWidth
               id="login-email"
               label="Correo Electrónico"
-              name="login-email"
+              name="loginEmail"
+              value={loginEmail}
+              onChange={onLoginInputChange}
               autoComplete="email"
               autoFocus
             />
@@ -54,7 +93,9 @@ export const LoginPages = () => {
               margin="normal"
               required
               fullWidth
-              name="login-password"
+              name="loginPassword"
+              value={loginPassword}
+              onChange={onLoginInputChange}
               label="Contraseña"
               type="password"
               id="login-password"
@@ -71,7 +112,7 @@ export const LoginPages = () => {
           <Typography component="h1" variant="h5">
             Crear cuenta
           </Typography>
-          <form onSubmit={handleSubmitRegister}>
+          <form onSubmit={registerSubmit}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -79,7 +120,9 @@ export const LoginPages = () => {
               fullWidth
               id="register-name"
               label="Nombre"
-              name="register-name"
+              name="registerName"
+              value={registerName}
+              onChange={onRegisterInputChange}
               autoComplete="name"
             />
             <TextField
@@ -89,7 +132,9 @@ export const LoginPages = () => {
               fullWidth
               id="register-email"
               label="Correo Electrónico"
-              name="register-email"
+              name="registerEmail"
+              value={registerEmail}
+              onChange={onRegisterInputChange}
               autoComplete="email"
             />
             <TextField
@@ -97,7 +142,9 @@ export const LoginPages = () => {
               margin="normal"
               required
               fullWidth
-              name="register-password"
+              name="registerPassword"
+              value={registerPassword}
+              onChange={onRegisterInputChange}
               label="Contraseña"
               type="password"
               id="register-password"
@@ -107,7 +154,9 @@ export const LoginPages = () => {
               margin="normal"
               required
               fullWidth
-              name="register-confirm-password"
+              name="registerPassword2"
+              value={registerPassword2}
+              onChange={onRegisterInputChange}
               label="Repita la Contraseña"
               type="password"
               id="register-confirm-password"
