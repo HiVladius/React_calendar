@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Button,
   TextField,
@@ -12,6 +12,8 @@ import Logo from "../../assets/react.svg";
 import { useForm } from "../../hooks";
 
 import { useAuthStore } from "../../hooks";
+
+import Swal from 'sweetalert2';
 
 const loginFormFields = {
   loginEmail: "",
@@ -27,7 +29,7 @@ const registerFormFields = {
 
 export const LoginPages = () => {
 
-  const { starLogin } = useAuthStore();
+  const { starLogin, errorMessage } = useAuthStore();
 
   const {
     loginEmail,
@@ -58,6 +60,18 @@ export const LoginPages = () => {
       registerPassword2,
     });
   };
+
+  useEffect(() => {
+    if(errorMessage !== undefined){
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorMessage,
+      })
+    }
+  
+  }, [errorMessage])
+  
 
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: "10rem" }}>
