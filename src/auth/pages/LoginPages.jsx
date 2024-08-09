@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   TextField,
@@ -13,7 +13,7 @@ import { useForm } from "../../hooks";
 
 import { useAuthStore } from "../../hooks";
 
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const loginFormFields = {
   loginEmail: "",
@@ -28,8 +28,7 @@ const registerFormFields = {
 };
 
 export const LoginPages = () => {
-
-  const { starLogin, errorMessage } = useAuthStore();
+  const { starLogin, errorMessage, starRegister } = useAuthStore();
 
   const {
     loginEmail,
@@ -47,31 +46,37 @@ export const LoginPages = () => {
 
   const loginSubmit = (event) => {
     event.preventDefault();
-    
-    starLogin({email: loginEmail, password: loginPassword});
+    starLogin({ email: loginEmail, password: loginPassword });
   };
 
   const registerSubmit = (event) => {
     event.preventDefault();
-    console.log({
-      registerName,
-      registerEmail,
-      registerPassword,
-      registerPassword2,
+
+    if (registerPassword !== registerPassword2) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Las contraseñas no coinciden",
+      });
+      return;
+    }
+
+    starRegister({
+      name: registerName,
+      email: registerEmail,
+      password: registerPassword,
     });
   };
 
   useEffect(() => {
-    if(errorMessage !== undefined){
+    if (errorMessage !== undefined) {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
+        icon: "error",
+        title: "Error",
         text: errorMessage,
-      })
+      });
     }
-  
-  }, [errorMessage])
-  
+  }, [errorMessage]);
 
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: "10rem" }}>
