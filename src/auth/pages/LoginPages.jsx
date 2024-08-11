@@ -38,6 +38,7 @@ export const LoginPages = () => {
 
   const {
     registerName,
+    registerLastname,
     registerEmail,
     registerPassword,
     registerPassword2,
@@ -63,6 +64,7 @@ export const LoginPages = () => {
 
     starRegister({
       name: registerName,
+      lastname: registerLastname,
       email: registerEmail,
       password: registerPassword,
     });
@@ -141,6 +143,18 @@ export const LoginPages = () => {
               label="Nombre"
               name="registerName"
               value={registerName}
+              onChange={onRegisterInputChange}
+              autoComplete="name"
+            />
+             <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="register-Lastname"
+              label="Lastname"
+              name="registerLastname"
+              value={registerLastname}
               onChange={onRegisterInputChange}
               autoComplete="name"
             />

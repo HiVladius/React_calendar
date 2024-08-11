@@ -1,0 +1,67 @@
+/* Estilos básicos del contenedor */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Estilos del loader */
+  .infinity-loader {
+    width: 50px; /* Ajusta el tamaño del loader según tus necesidades */
+    height: 50px;
+    background-color: #3498db; /* Color inicial */
+    border-radius: 50%; /* Forma inicial: círculo */
+    animation: transformShape 3s infinite, changeColor 5s infinite, rotate 2s infinite linear;
+  }
+  
+  /* Animación para transformar la forma */
+  @keyframes transformShape {
+    0% {
+      border-radius: 50%; /* Círculo */
+    }
+    33% {
+      border-radius: 0; /* Cuadrado */
+    }
+    66% {
+      border-radius: 50% 0 0 0; /* Triángulo (aproximado) */
+      transform: rotate(45deg);
+    }
+    100% {
+      border-radius: 50%; /* Círculo */
+      transform: rotate(0deg);
+    }
+  }
+  
+  /* Animación para cambiar el color */
+  @keyframes changeColor {
+    0% {
+      background-color: #3498db; /* Azul */
+    }
+    20% {
+      background-color: #e74c3c; /* Rojo */
+    }
+    40% {
+      background-color: #2ecc71; /* Verde */
+    }
+    60% {
+      background-color: #f39c12; /* Amarillo */
+    }
+    80% {
+      background-color: #9b59b6; /* Morado */
+    }
+    100% {
+      background-color: #3498db; /* Azul */
+    }
+  }
+  
+  /* Animación para rotar */
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
